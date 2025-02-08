@@ -16,7 +16,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button"; // Assuming you have a Button component
-import { exportToExcel } from "@/lib/exportToExcel"; // Import the utility function
+import { exportToExcel } from "@/lib/exportToExcel"; // Import the CSV utility function
+import { exportToPDF } from "@/lib/exportToPDF"; // Import the PDF utility function
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,16 +34,21 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const handleExport = () => {
+  const handleExportCSV = () => {
     exportToExcel(data, "payments");
+  };
+
+  const handleExportPDF = () => {
+    exportToPDF("table-to-export", "payments");
   };
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
-        <Button onClick={handleExport}>Export to Excel</Button>
+      <div className="flex justify-end mb-4 gap-2">
+        <Button onClick={handleExportCSV}>Export to CSV</Button>
+        <Button onClick={handleExportPDF}>Export to PDF</Button>
       </div>
-      <div className="rounded-md border">
+      <div id="table-to-export" className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
